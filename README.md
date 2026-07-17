@@ -28,25 +28,25 @@ For a zero-cost or low-cost startup setup, the biggest risk is quietly crossing 
 Public repository:
 
 ```bash
-npm install github:abdulrasak2k/bns-provider-usage
+npm install github:abdulrasak2k/provider-usage
 ```
 
 Specific branch:
 
 ```bash
-npm install github:abdulrasak2k/bns-provider-usage#main
+npm install github:abdulrasak2k/provider-usage#main
 ```
 
 Specific tag:
 
 ```bash
-npm install github:abdulrasak2k/bns-provider-usage#v0.1.0
+npm install github:abdulrasak2k/provider-usage#v0.1.0
 ```
 
 Private repository over SSH:
 
 ```bash
-npm install git+ssh://git@github.com/abdulrasak2k/bns-provider-usage.git
+npm install git+ssh://git@github.com/abdulrasak2k/provider-usage.git
 ```
 
 Then import it:
@@ -216,7 +216,7 @@ git push origin main --tags
 Then install a tagged version in host apps:
 
 ```bash
-npm install github:abdulrasak2k/bns-provider-usage#v0.1.1
+npm install github:abdulrasak2k/provider-usage#v0.1.1
 ```
 
 ## Limitations

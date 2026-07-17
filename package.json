@@ -9,12 +9,12 @@
   "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abdulrasak2k/bns-provider-usage.git"
+    "url": "git+https://github.com/abdulrasak2k/provider-usage.git"
   },
   "bugs": {
-    "url": "https://github.com/abdulrasak2k/bns-provider-usage/issues"
+    "url": "https://github.com/abdulrasak2k/provider-usage/issues"
   },
-  "homepage": "https://github.com/abdulrasak2k/bns-provider-usage#readme",
+  "homepage": "https://github.com/abdulrasak2k/provider-usage#readme",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
