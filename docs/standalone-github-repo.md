@@ -1,13 +1,13 @@
 # Standalone GitHub repository setup
 
-Use this when you want `@bns/provider-usage` in its own GitHub repository and then install it into multiple projects.
+Use this when you want `@abdulrasak2k/usage-watch` in its own GitHub repository and then install it into multiple projects.
 
 ## 1. Create the GitHub repository
 
 Recommended repository name:
 
 ```txt
-provider-usage
+usage-watch
 ```
 
 Recommended visibility:
@@ -20,8 +20,8 @@ Recommended visibility:
 From the BNS File Tracking project root:
 
 ```bash
-cp -R packages/provider-usage ../provider-usage
-cd ../provider-usage
+cp -R packages/provider-usage ../usage-watch
+cd ../usage-watch
 ```
 
 The standalone repo root should contain:
@@ -45,14 +45,14 @@ git init
 git add .
 git commit -m "Initial provider usage package"
 git branch -M main
-git remote add origin git@github.com:abdulrasak2k/provider-usage.git
+git remote add origin git@github.com:abdulrasak2k/usage-watch.git
 git push -u origin main
 ```
 
 If you use HTTPS instead of SSH:
 
 ```bash
-git remote add origin https://github.com/abdulrasak2k/provider-usage.git
+git remote add origin https://github.com/abdulrasak2k/usage-watch.git
 ```
 
 ## 4. Test installation from another project
@@ -60,13 +60,13 @@ git remote add origin https://github.com/abdulrasak2k/provider-usage.git
 In a different project:
 
 ```bash
-npm install github:abdulrasak2k/provider-usage
+npm install github:abdulrasak2k/usage-watch
 ```
 
 For a private repo, SSH is usually smoother:
 
 ```bash
-npm install git+ssh://git@github.com/abdulrasak2k/provider-usage.git
+npm install git+ssh://git@github.com/abdulrasak2k/usage-watch.git
 ```
 
 ## 5. Pin versions with tags
@@ -81,7 +81,7 @@ git push origin main --tags
 Then install that exact version:
 
 ```bash
-npm install github:abdulrasak2k/provider-usage#v0.1.1
+npm install github:abdulrasak2k/usage-watch#v0.1.1
 ```
 
 This is better than installing `main` in production because it avoids surprise changes.
@@ -91,7 +91,7 @@ This is better than installing `main` in production because it avoids surprise c
 When you release a new tag:
 
 ```bash
-npm install github:abdulrasak2k/provider-usage#v0.1.2
+npm install github:abdulrasak2k/usage-watch#v0.1.2
 ```
 
 Then commit the updated host app `package.json` and lockfile.

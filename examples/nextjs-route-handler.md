@@ -4,7 +4,7 @@ Example admin-only endpoint:
 
 ```ts
 import { NextResponse } from "next/server";
-import { collectProviderUsage } from "@bns/provider-usage";
+import { collectProviderUsage } from "@abdulrasak2k/usage-watch";
 
 export async function GET() {
   // Replace this with your host app auth/RBAC.

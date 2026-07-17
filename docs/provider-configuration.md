@@ -109,7 +109,7 @@ Then:
 
 ```ts
 import usage from "./vercel-usage.json" assert { type: "json" };
-import { createVercelUsageMetricsFromCliJson } from "@bns/provider-usage";
+import { createVercelUsageMetricsFromCliJson } from "@abdulrasak2k/usage-watch";
 
 const result = createVercelUsageMetricsFromCliJson(usage);
 ```

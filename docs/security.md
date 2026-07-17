@@ -16,7 +16,7 @@ This package is designed for server-side provider usage monitoring.
 Use route handlers, server actions, or scheduled jobs:
 
 ```txt
-app/api/admin/provider-usage/route.ts
+app/api/admin/usage-watch/route.ts
 ```
 
 Protect the route before collecting data:
@@ -32,7 +32,7 @@ Avoid this:
 ```tsx
 "use client";
 
-import { collectProviderUsage } from "@bns/provider-usage";
+import { collectProviderUsage } from "@abdulrasak2k/usage-watch";
 ```
 
 That can leak implementation details and encourages secrets near browser code.
