@@ -1,0 +1,64 @@
+{
+  "name": "@bns/provider-usage",
+  "version": "0.1.0",
+  "description": "Reusable server-side provider usage collectors and normalized cost/limit metrics for BNS-style apps.",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdulrasak2k/bns-provider-usage.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abdulrasak2k/bns-provider-usage/issues"
+  },
+  "homepage": "https://github.com/abdulrasak2k/bns-provider-usage#readme",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./providers/cloudflare-r2": {
+      "types": "./dist/providers/cloudflare-r2.d.ts",
+      "default": "./dist/providers/cloudflare-r2.js"
+    },
+    "./providers/upstash-redis": {
+      "types": "./dist/providers/upstash-redis.d.ts",
+      "default": "./dist/providers/upstash-redis.js"
+    },
+    "./providers/resend": {
+      "types": "./dist/providers/resend.d.ts",
+      "default": "./dist/providers/resend.js"
+    },
+    "./providers/supabase": {
+      "types": "./dist/providers/supabase.d.ts",
+      "default": "./dist/providers/supabase.js"
+    },
+    "./providers/vercel": {
+      "types": "./dist/providers/vercel.d.ts",
+      "default": "./dist/providers/vercel.js"
+    }
+  },
+  "files": [
+    "dist",
+    "docs",
+    "examples",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepack": "npm run build",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "typescript": "^5.9.2"
+  }
+}
