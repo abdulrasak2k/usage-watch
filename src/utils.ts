@@ -1,4 +1,4 @@
-import type { FetchLike } from "./types";
+import type { FetchLike } from "./types.js";
 
 export class UsageProviderError extends Error {
   readonly provider: string;

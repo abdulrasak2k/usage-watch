@@ -5,6 +5,7 @@ Reusable server-side usage monitoring package for startup SaaS/internal tools.
 It collects or normalizes usage metrics from the providers commonly used in BNS File Tracking:
 
 - Cloudflare R2
+- MongoDB Atlas
 - Upstash Redis
 - Resend
 - Supabase
@@ -76,6 +77,13 @@ export async function collectUsageSnapshot() {
       email: process.env.UPSTASH_EMAIL!,
       apiKey: process.env.UPSTASH_API_KEY!,
     },
+    mongodbAtlas: {
+      projectId: process.env.MONGODB_ATLAS_PROJECT_ID!,
+      clientId: process.env.MONGODB_ATLAS_CLIENT_ID!,
+      clientSecret: process.env.MONGODB_ATLAS_CLIENT_SECRET!,
+      // Optional. If omitted, the collector selects an active primary process.
+      processId: process.env.MONGODB_ATLAS_PROCESS_ID,
+    },
     resend: {
       sentToday: 12,
       sentThisMonth: 250,
@@ -105,11 +113,11 @@ Each metric has the same shape:
 
 ```ts
 type UsageMetric = {
-  provider: "cloudflare-r2" | "upstash-redis" | "resend" | "supabase" | "vercel" | "custom";
+  provider: "cloudflare-r2" | "mongodb-atlas" | "upstash-redis" | "resend" | "supabase" | "vercel" | "custom";
   key: string;
   label: string;
   value: number;
-  unit: "count" | "bytes" | "usd" | "percent" | "milliseconds" | "requests";
+  unit: "count" | "bytes" | "usd" | "percent" | "milliseconds" | "operations_per_second" | "requests";
   period: "instant" | "day" | "month" | "range";
   limit?: number;
   status: "ok" | "warning" | "critical" | "unknown";
@@ -126,6 +134,8 @@ Use this package only from server-side code.
 Never expose these values to browser bundles:
 
 - `CLOUDFLARE_API_TOKEN`
+- `MONGODB_ATLAS_CLIENT_ID`
+- `MONGODB_ATLAS_CLIENT_SECRET`
 - `UPSTASH_EMAIL`
 - `UPSTASH_API_KEY`
 - `RESEND_API_KEY`
@@ -151,6 +161,7 @@ Bad places to use it:
 | Provider | Collection style | Notes |
 | --- | --- | --- |
 | Cloudflare R2 | Live API | Uses Cloudflare GraphQL analytics. |
+| MongoDB Atlas | Live API | Uses OAuth service accounts and Atlas process measurements. |
 | Upstash Redis | Live API | Uses Upstash Developer API database stats. |
 | Resend | App summary | Count your own `email_logs`; this is more accurate per product/tenant. |
 | Supabase | App/provider summary | Pass database size, MAU, egress, etc. from your own trusted source. |
@@ -222,5 +233,6 @@ npm install github:abdulrasak2k/usage-watch#v0.1.1
 ## Limitations
 
 - Cloudflare R2 Class A/Class B request counts are estimated from GraphQL `actionType` names. For billing-critical reporting, validate against Cloudflare billing exports.
+- MongoDB Atlas rolling network transfer is estimated by integrating the sampled bytes-per-second measurements. The default limits match Free clusters and should be overridden for Flex or dedicated clusters.
 - Resend usage is intentionally summary-based. Your app’s email log table is usually the most trustworthy source for product-level usage.
 - Supabase and Vercel billing APIs can vary by account/product. This package accepts normalized summaries so host apps can adapt without changing the shared metric model.

@@ -5,7 +5,7 @@ import type {
   UsageStatus,
   UsageThresholds,
   UsageUnit,
-} from "./types";
+} from "./types.js";
 
 export const DEFAULT_USAGE_THRESHOLDS: UsageThresholds = {
   warning: 0.75,

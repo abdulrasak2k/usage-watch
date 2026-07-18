@@ -1,5 +1,5 @@
-import { createUsageMetric } from "../thresholds";
-import type { CommonCollectorOptions, ProviderUsageResult } from "../types";
+import { createUsageMetric } from "../thresholds.js";
+import type { CommonCollectorOptions, ProviderUsageResult } from "../types.js";
 
 export interface ResendUsageSummaryOptions extends CommonCollectorOptions {
   sentToday?: number;

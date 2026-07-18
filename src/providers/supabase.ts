@@ -1,6 +1,6 @@
-import { createUsageMetric } from "../thresholds";
-import type { CommonCollectorOptions, ProviderUsageResult } from "../types";
-import { bytesFromGigabytes, bytesFromMegabytes } from "../utils";
+import { createUsageMetric } from "../thresholds.js";
+import type { CommonCollectorOptions, ProviderUsageResult } from "../types.js";
+import { bytesFromGigabytes, bytesFromMegabytes } from "../utils.js";
 
 export interface SupabaseUsageSummaryOptions extends CommonCollectorOptions {
   databaseBytes?: number;
