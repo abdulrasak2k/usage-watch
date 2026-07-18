@@ -24,6 +24,10 @@
       "types": "./dist/providers/cloudflare-r2.d.ts",
       "default": "./dist/providers/cloudflare-r2.js"
     },
+    "./providers/mongodb-atlas": {
+      "types": "./dist/providers/mongodb-atlas.d.ts",
+      "default": "./dist/providers/mongodb-atlas.js"
+    },
     "./providers/upstash-redis": {
       "types": "./dist/providers/upstash-redis.d.ts",
       "default": "./dist/providers/upstash-redis.js"
@@ -52,6 +56,7 @@
     "build": "tsc -p tsconfig.json",
     "prepare": "npm run build",
     "prepack": "npm run build",
+    "test": "npm run build && node --test",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "engines": {

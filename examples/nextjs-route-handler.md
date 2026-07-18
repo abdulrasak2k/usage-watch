@@ -23,6 +23,12 @@ export async function GET() {
       email: process.env.UPSTASH_EMAIL!,
       apiKey: process.env.UPSTASH_API_KEY!,
     },
+    mongodbAtlas: {
+      projectId: process.env.MONGODB_ATLAS_PROJECT_ID!,
+      clientId: process.env.MONGODB_ATLAS_CLIENT_ID!,
+      clientSecret: process.env.MONGODB_ATLAS_CLIENT_SECRET!,
+      processId: process.env.MONGODB_ATLAS_PROCESS_ID,
+    },
     resend: {
       // Replace these with counts from your email_logs table.
       sentToday: 0,

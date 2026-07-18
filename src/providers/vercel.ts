@@ -1,6 +1,6 @@
-import { createUsageMetric } from "../thresholds";
-import type { CommonCollectorOptions, ProviderUsageResult } from "../types";
-import { asArray, asRecord, toNumber } from "../utils";
+import { createUsageMetric } from "../thresholds.js";
+import type { CommonCollectorOptions, ProviderUsageResult } from "../types.js";
+import { asArray, asRecord, toNumber } from "../utils.js";
 
 export interface VercelUsageSummaryOptions extends CommonCollectorOptions {
   bandwidthBytes?: number;

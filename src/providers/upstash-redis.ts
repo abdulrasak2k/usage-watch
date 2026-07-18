@@ -1,5 +1,5 @@
-import { createUsageMetric } from "../thresholds";
-import type { CommonCollectorOptions, ProviderUsageResult } from "../types";
+import { createUsageMetric } from "../thresholds.js";
+import type { CommonCollectorOptions, ProviderUsageResult } from "../types.js";
 import {
   asRecord,
   createBasicAuthHeader,
@@ -7,7 +7,7 @@ import {
   latestSeriesNumber,
   readProviderJson,
   toNumber,
-} from "../utils";
+} from "../utils.js";
 
 export interface UpstashRedisCollectorOptions extends CommonCollectorOptions {
   databaseId: string;

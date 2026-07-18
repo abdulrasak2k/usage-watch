@@ -1,5 +1,5 @@
-import { createUsageMetric } from "../thresholds";
-import type { CommonCollectorOptions, ProviderUsageResult } from "../types";
+import { createUsageMetric } from "../thresholds.js";
+import type { CommonCollectorOptions, ProviderUsageResult } from "../types.js";
 import {
   asArray,
   asRecord,
@@ -8,7 +8,7 @@ import {
   readProviderJson,
   toIsoString,
   toNumber,
-} from "../utils";
+} from "../utils.js";
 
 export interface CloudflareR2CollectorOptions extends CommonCollectorOptions {
   accountId: string;

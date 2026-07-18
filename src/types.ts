@@ -1,5 +1,6 @@
 export type UsageProvider =
   | "cloudflare-r2"
+  | "mongodb-atlas"
   | "upstash-redis"
   | "resend"
   | "supabase"
@@ -14,6 +15,7 @@ export type UsageUnit =
   | "usd"
   | "percent"
   | "milliseconds"
+  | "operations_per_second"
   | "requests";
 
 export type UsagePeriod = "instant" | "day" | "month" | "range";

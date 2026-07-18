@@ -1,29 +1,34 @@
 import {
   collectCloudflareR2Usage,
   type CloudflareR2CollectorOptions,
-} from "./providers/cloudflare-r2";
+} from "./providers/cloudflare-r2.js";
+import {
+  collectMongoDBAtlasUsage,
+  type MongoDBAtlasCollectorOptions,
+} from "./providers/mongodb-atlas.js";
 import {
   collectUpstashRedisUsage,
   type UpstashRedisCollectorOptions,
-} from "./providers/upstash-redis";
+} from "./providers/upstash-redis.js";
 import {
   createResendUsageMetrics,
   type ResendUsageSummaryOptions,
-} from "./providers/resend";
+} from "./providers/resend.js";
 import {
   createSupabaseUsageMetrics,
   type SupabaseUsageSummaryOptions,
-} from "./providers/supabase";
+} from "./providers/supabase.js";
 import {
   createVercelUsageMetrics,
   createVercelUsageMetricsFromCliJson,
   type VercelUsageSummaryOptions,
-} from "./providers/vercel";
-import type { ProviderUsageResult, UsageMetric } from "./types";
-import { compactErrors } from "./utils";
+} from "./providers/vercel.js";
+import type { ProviderUsageResult, UsageMetric } from "./types.js";
+import { compactErrors } from "./utils.js";
 
 export interface CollectProviderUsageOptions {
   cloudflareR2?: CloudflareR2CollectorOptions;
+  mongodbAtlas?: MongoDBAtlasCollectorOptions;
   upstashRedis?: UpstashRedisCollectorOptions;
   resend?: ResendUsageSummaryOptions;
   supabase?: SupabaseUsageSummaryOptions;
@@ -42,11 +47,27 @@ export async function collectProviderUsage(
   const results: ProviderUsageResult[] = [];
 
   if (options.cloudflareR2) {
-    results.push(await safeCollect(() => collectCloudflareR2Usage(options.cloudflareR2!)));
+    results.push(
+      await safeCollect("cloudflare-r2", () =>
+        collectCloudflareR2Usage(options.cloudflareR2!),
+      ),
+    );
+  }
+
+  if (options.mongodbAtlas) {
+    results.push(
+      await safeCollect("mongodb-atlas", () =>
+        collectMongoDBAtlasUsage(options.mongodbAtlas!),
+      ),
+    );
   }
 
   if (options.upstashRedis) {
-    results.push(await safeCollect(() => collectUpstashRedisUsage(options.upstashRedis!)));
+    results.push(
+      await safeCollect("upstash-redis", () =>
+        collectUpstashRedisUsage(options.upstashRedis!),
+      ),
+    );
   }
 
   if (options.resend) {
@@ -72,13 +93,14 @@ export async function collectProviderUsage(
 }
 
 async function safeCollect(
+  provider: ProviderUsageResult["provider"],
   collect: () => Promise<ProviderUsageResult>,
 ): Promise<ProviderUsageResult> {
   try {
     return await collect();
   } catch (error) {
     return {
-      provider: "custom",
+      provider,
       metrics: [],
       errors: compactErrors([error]) ?? ["Provider usage collection failed"],
     };
