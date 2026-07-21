@@ -81,7 +81,7 @@ git push origin main --tags
 Then install that exact version:
 
 ```bash
-npm install github:abdulrasak2k/usage-watch#v0.2.0
+npm install github:abdulrasak2k/usage-watch#v0.3.0
 ```
 
 This is better than installing `main` in production because it avoids surprise changes.
@@ -91,7 +91,7 @@ This is better than installing `main` in production because it avoids surprise c
 When you release a new tag:
 
 ```bash
-npm install github:abdulrasak2k/usage-watch#v0.2.0
+npm install github:abdulrasak2k/usage-watch#v0.3.0
 ```
 
 Then commit the updated host app `package.json` and lockfile.
