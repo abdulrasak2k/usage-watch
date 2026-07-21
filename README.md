@@ -95,10 +95,8 @@ export async function collectUsageSnapshot() {
       egressBytesThisMonth: 300_000_000,
     },
     vercel: {
-      bandwidthBytes: 800_000_000,
-      edgeRequests: 15_000,
-      functionInvocations: 3_000,
-      projectedMonthlyCostUsd: 0,
+      token: process.env.VERCEL_TOKEN!,
+      teamId: process.env.VERCEL_TEAM_ID,
       limits: {
         monthlyCostUsd: 0,
       },
@@ -165,7 +163,7 @@ Bad places to use it:
 | Upstash Redis | Live API | Uses Upstash Developer API database stats. |
 | Resend | App summary | Count your own `email_logs`; this is more accurate per product/tenant. |
 | Supabase | App/provider summary | Pass database size, MAU, egress, etc. from your own trusted source. |
-| Vercel | Summary or CLI JSON | Supports normalized summary and `vercel usage --format json` style payloads. |
+| Vercel | Live API, summary, or CLI JSON | Uses FOCUS billing charges, or accepts normalized/CLI usage data. |
 
 ## Recommended host-app database table
 
@@ -235,4 +233,5 @@ npm install github:abdulrasak2k/usage-watch#v0.1.1
 - Cloudflare R2 Class A/Class B request counts are estimated from GraphQL `actionType` names. For billing-critical reporting, validate against Cloudflare billing exports.
 - MongoDB Atlas rolling network transfer is estimated by integrating the sampled bytes-per-second measurements. The default limits match Free clusters and should be overridden for Flex or dedicated clusters.
 - Resend usage is intentionally summary-based. Your app’s email log table is usually the most trustworthy source for product-level usage.
-- Supabase and Vercel billing APIs can vary by account/product. This package accepts normalized summaries so host apps can adapt without changing the shared metric model.
+- The live Vercel collector depends on access to the account's billing charges endpoint. Keep using the summary or CLI JSON adapter when that endpoint is unavailable for the account, plan, or role.
+- Supabase billing APIs can vary by account/product. This package accepts normalized summaries so host apps can adapt without changing the shared metric model.
