@@ -1,6 +1,6 @@
 {
   "name": "@abdulrasak2k/usage-watch",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Reusable server-side provider usage collectors and normalized cost/limit metrics for BNS-style apps.",
   "type": "module",
   "license": "MIT",
