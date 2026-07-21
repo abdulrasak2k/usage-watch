@@ -1,5 +1,7 @@
 # @abdulrasak2k/usage-watch
 
+[![CI](https://github.com/abdulrasak2k/usage-watch/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/abdulrasak2k/usage-watch/actions/workflows/ci.yml)
+
 Reusable server-side usage monitoring package for startup SaaS/internal tools.
 
 It collects or normalizes usage metrics from the providers commonly used in BNS File Tracking:
