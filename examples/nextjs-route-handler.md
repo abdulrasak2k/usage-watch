@@ -29,6 +29,14 @@ export async function GET() {
       clientSecret: process.env.MONGODB_ATLAS_CLIENT_SECRET!,
       processId: process.env.MONGODB_ATLAS_PROCESS_ID,
     },
+    vercel: {
+      token: process.env.VERCEL_TOKEN!,
+      teamId: process.env.VERCEL_TEAM_ID,
+      limits: {
+        // Treat any incurred cost as critical for a zero-cost deployment.
+        monthlyCostUsd: 0,
+      },
+    },
     resend: {
       // Replace these with counts from your email_logs table.
       sentToday: 0,

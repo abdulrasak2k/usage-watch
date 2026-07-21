@@ -19,8 +19,10 @@ import {
   type SupabaseUsageSummaryOptions,
 } from "./providers/supabase.js";
 import {
+  collectVercelUsage,
   createVercelUsageMetrics,
   createVercelUsageMetricsFromCliJson,
+  type VercelCollectorOptions,
   type VercelUsageSummaryOptions,
 } from "./providers/vercel.js";
 import type { ProviderUsageResult, UsageMetric } from "./types.js";
@@ -32,7 +34,7 @@ export interface CollectProviderUsageOptions {
   upstashRedis?: UpstashRedisCollectorOptions;
   resend?: ResendUsageSummaryOptions;
   supabase?: SupabaseUsageSummaryOptions;
-  vercel?: VercelUsageSummaryOptions;
+  vercel?: VercelUsageSummaryOptions | VercelCollectorOptions;
   vercelCliUsageJson?: unknown;
 }
 
@@ -79,7 +81,14 @@ export async function collectProviderUsage(
   }
 
   if (options.vercel) {
-    results.push(createVercelUsageMetrics(options.vercel));
+    const vercelOptions = options.vercel;
+    if (isVercelCollectorOptions(vercelOptions)) {
+      results.push(
+        await safeCollect("vercel", () => collectVercelUsage(vercelOptions)),
+      );
+    } else {
+      results.push(createVercelUsageMetrics(vercelOptions));
+    }
   }
 
   if (options.vercelCliUsageJson) {
@@ -90,6 +99,12 @@ export async function collectProviderUsage(
     metrics: results.flatMap((result) => result.metrics),
     results,
   };
+}
+
+function isVercelCollectorOptions(
+  options: VercelUsageSummaryOptions | VercelCollectorOptions,
+): options is VercelCollectorOptions {
+  return "token" in options && typeof options.token === "string";
 }
 
 async function safeCollect(

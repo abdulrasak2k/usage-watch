@@ -129,7 +129,48 @@ BNS File Tracking should keep document files in Cloudflare R2, so Supabase Stora
 
 ## Vercel
 
-Option 1: pass a normalized summary:
+Option 1: collect live FOCUS billing charges with a Vercel Access Token:
+
+```env
+VERCEL_TOKEN=
+VERCEL_TEAM_ID=
+```
+
+```ts
+collectProviderUsage({
+  vercel: {
+    token: process.env.VERCEL_TOKEN!,
+    teamId: process.env.VERCEL_TEAM_ID,
+    // Optional ISO date range. Omit both for Vercel's current period.
+    from: "2026-07-01T00:00:00Z",
+    to: "2026-07-31T23:59:59Z",
+    limits: {
+      monthlyCostUsd: 0,
+      edgeRequests: 1_000_000,
+      serviceUsage: {
+        active_cpu: 14_400,
+      },
+    },
+  },
+});
+```
+
+The collector calls `GET /v1/billing/charges`, parses the streamed JSONL
+response, and aggregates consumed quantities by service and unit. It also
+reports effective and billed cost. Set `teamId` or `slug` for team-owned
+resources; omit them for the token's personal scope.
+
+Limits in `serviceUsage` can use either the exact Vercel service name or its
+normalized lowercase key. Values must use the normalized metric value: plain
+GB/MB/KB quantities are converted to bytes, requests stay as requests, and
+specialized units such as GB-hours remain numeric counts with their original
+unit preserved in metadata.
+
+The token must have access to the selected account and a role permitted to read
+billing usage. If the billing endpoint is unavailable for the account or plan,
+use the CLI JSON or normalized summary option below.
+
+Option 2: pass a normalized summary:
 
 ```ts
 createVercelUsageMetrics({
@@ -141,7 +182,7 @@ createVercelUsageMetrics({
 });
 ```
 
-Option 2: pass CLI JSON:
+Option 3: pass CLI JSON:
 
 ```bash
 vercel usage --format json > vercel-usage.json

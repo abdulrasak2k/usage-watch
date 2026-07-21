@@ -30,8 +30,12 @@ export function evaluateUsageStatus(
     return "unknown";
   }
 
-  if (!limit || limit <= 0) {
+  if (typeof limit !== "number" || limit < 0) {
     return "ok";
+  }
+
+  if (limit === 0) {
+    return value > 0 ? "critical" : "ok";
   }
 
   const normalizedThresholds = normalizeThresholds(thresholds);
