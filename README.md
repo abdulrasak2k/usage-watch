@@ -43,7 +43,7 @@ npm install github:abdulrasak2k/usage-watch#main
 Specific tag:
 
 ```bash
-npm install github:abdulrasak2k/usage-watch#v0.1.0
+npm install github:abdulrasak2k/usage-watch#v0.2.0
 ```
 
 Private repository over SSH:
@@ -227,7 +227,7 @@ git push origin main --tags
 Then install a tagged version in host apps:
 
 ```bash
-npm install github:abdulrasak2k/usage-watch#v0.1.1
+npm install github:abdulrasak2k/usage-watch#v0.2.0
 ```
 
 ## Limitations
