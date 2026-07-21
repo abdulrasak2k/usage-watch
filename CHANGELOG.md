@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 
 The project follows [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Live Supabase database, Storage, and API request usage collection through the Management API, with optional trusted MAU and egress summaries.
+
 ## [0.2.0] - 2026-07-21
 
 ### Added

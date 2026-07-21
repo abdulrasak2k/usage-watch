@@ -92,7 +92,10 @@ export async function collectUsageSnapshot() {
       failedToday: 0,
     },
     supabase: {
-      databaseBytes: 120_000_000,
+      projectRef: process.env.SUPABASE_PROJECT_REF!,
+      accessToken: process.env.SUPABASE_ACCESS_TOKEN!,
+      // Supabase does not expose stable project billing-cycle values for
+      // these fields, so provide trusted application summaries when needed.
       monthlyActiveUsers: 45,
       egressBytesThisMonth: 300_000_000,
     },
