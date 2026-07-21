@@ -116,7 +116,39 @@ createResendUsageMetrics({
 
 ## Supabase
 
-Recommended source: trusted server-side summary.
+Option 1: collect live project database, Storage, and API request usage with a
+Supabase Management API access token:
+
+```env
+SUPABASE_PROJECT_REF=
+SUPABASE_ACCESS_TOKEN=
+```
+
+```ts
+collectProviderUsage({
+  supabase: {
+    projectRef: process.env.SUPABASE_PROJECT_REF!,
+    accessToken: process.env.SUPABASE_ACCESS_TOKEN!,
+    interval: "7day",
+    // Optional trusted billing-cycle summaries:
+    monthlyActiveUsers,
+    egressBytesThisMonth,
+  },
+});
+```
+
+The access token needs `database_read` and `analytics_usage_read` permissions.
+The collector uses Supabase's beta read-only query endpoint to aggregate
+database and Storage bytes, and the analytics usage endpoint to count Auth,
+Realtime, REST, and Storage API requests. The token is never returned in raw
+or normalized output.
+
+Supabase does not currently expose stable per-project billing-cycle MAU and
+egress values through the Management API. Pass trusted server-side summaries
+for those values when available; otherwise the live collector omits those
+metrics instead of reporting zero.
+
+Option 2: pass a complete trusted server-side summary.
 
 Pass values such as:
 

@@ -15,7 +15,9 @@ import {
   type ResendUsageSummaryOptions,
 } from "./providers/resend.js";
 import {
+  collectSupabaseUsage,
   createSupabaseUsageMetrics,
+  type SupabaseCollectorOptions,
   type SupabaseUsageSummaryOptions,
 } from "./providers/supabase.js";
 import {
@@ -33,7 +35,7 @@ export interface CollectProviderUsageOptions {
   mongodbAtlas?: MongoDBAtlasCollectorOptions;
   upstashRedis?: UpstashRedisCollectorOptions;
   resend?: ResendUsageSummaryOptions;
-  supabase?: SupabaseUsageSummaryOptions;
+  supabase?: SupabaseUsageSummaryOptions | SupabaseCollectorOptions;
   vercel?: VercelUsageSummaryOptions | VercelCollectorOptions;
   vercelCliUsageJson?: unknown;
 }
@@ -77,7 +79,16 @@ export async function collectProviderUsage(
   }
 
   if (options.supabase) {
-    results.push(createSupabaseUsageMetrics(options.supabase));
+    const supabaseOptions = options.supabase;
+    if (isSupabaseCollectorOptions(supabaseOptions)) {
+      results.push(
+        await safeCollect("supabase", () =>
+          collectSupabaseUsage(supabaseOptions),
+        ),
+      );
+    } else {
+      results.push(createSupabaseUsageMetrics(supabaseOptions));
+    }
   }
 
   if (options.vercel) {
@@ -99,6 +110,17 @@ export async function collectProviderUsage(
     metrics: results.flatMap((result) => result.metrics),
     results,
   };
+}
+
+function isSupabaseCollectorOptions(
+  options: SupabaseUsageSummaryOptions | SupabaseCollectorOptions,
+): options is SupabaseCollectorOptions {
+  return (
+    "accessToken" in options &&
+    typeof options.accessToken === "string" &&
+    "projectRef" in options &&
+    typeof options.projectRef === "string"
+  );
 }
 
 function isVercelCollectorOptions(
