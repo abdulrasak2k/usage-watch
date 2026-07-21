@@ -87,8 +87,9 @@ export async function collectUsageSnapshot() {
       processId: process.env.MONGODB_ATLAS_PROCESS_ID,
     },
     resend: {
-      sentToday: 12,
-      sentThisMonth: 250,
+      apiKey: process.env.RESEND_API_KEY!,
+      // Optional application-log summary; Resend quota headers do not include
+      // delivery failures or bounces.
       failedToday: 0,
     },
     supabase: {
@@ -166,8 +167,8 @@ Bad places to use it:
 | Cloudflare R2 | Live API | Uses Cloudflare GraphQL analytics. |
 | MongoDB Atlas | Live API | Uses OAuth service accounts and Atlas process measurements. |
 | Upstash Redis | Live API | Uses Upstash Developer API database stats. |
-| Resend | App summary | Count your own `email_logs`; this is more accurate per product/tenant. |
-| Supabase | App/provider summary | Pass database size, MAU, egress, etc. from your own trusted source. |
+| Resend | Live API or summary | Reads quota headers; app logs remain more accurate per product/tenant. |
+| Supabase | Live API or summary | Reads project database, Storage, and API usage; accepts MAU and egress summaries. |
 | Vercel | Live API, summary, or CLI JSON | Uses FOCUS billing charges, or accepts normalized/CLI usage data. |
 
 ## Recommended host-app database table
@@ -237,6 +238,6 @@ npm install github:abdulrasak2k/usage-watch#v0.2.0
 
 - Cloudflare R2 Class A/Class B request counts are estimated from GraphQL `actionType` names. For billing-critical reporting, validate against Cloudflare billing exports.
 - MongoDB Atlas rolling network transfer is estimated by integrating the sampled bytes-per-second measurements. The default limits match Free clusters and should be overridden for Flex or dedicated clusters.
-- Resend usage is intentionally summary-based. Your app’s email log table is usually the most trustworthy source for product-level usage.
+- Resend quota headers are team-wide and do not include delivery failures, bounces, or per-product attribution. Use application email logs for those details.
 - The live Vercel collector depends on access to the account's billing charges endpoint. Keep using the summary or CLI JSON adapter when that endpoint is unavailable for the account, plan, or role.
-- Supabase billing APIs can vary by account/product. This package accepts normalized summaries so host apps can adapt without changing the shared metric model.
+- Supabase's read-only database query endpoint is beta, and stable project-level billing-cycle MAU and egress values are not exposed through the Management API. The collector accepts trusted summaries for those values.

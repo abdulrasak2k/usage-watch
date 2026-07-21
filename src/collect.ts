@@ -11,7 +11,9 @@ import {
   type UpstashRedisCollectorOptions,
 } from "./providers/upstash-redis.js";
 import {
+  collectResendUsage,
   createResendUsageMetrics,
+  type ResendCollectorOptions,
   type ResendUsageSummaryOptions,
 } from "./providers/resend.js";
 import {
@@ -34,7 +36,7 @@ export interface CollectProviderUsageOptions {
   cloudflareR2?: CloudflareR2CollectorOptions;
   mongodbAtlas?: MongoDBAtlasCollectorOptions;
   upstashRedis?: UpstashRedisCollectorOptions;
-  resend?: ResendUsageSummaryOptions;
+  resend?: ResendUsageSummaryOptions | ResendCollectorOptions;
   supabase?: SupabaseUsageSummaryOptions | SupabaseCollectorOptions;
   vercel?: VercelUsageSummaryOptions | VercelCollectorOptions;
   vercelCliUsageJson?: unknown;
@@ -75,7 +77,14 @@ export async function collectProviderUsage(
   }
 
   if (options.resend) {
-    results.push(createResendUsageMetrics(options.resend));
+    const resendOptions = options.resend;
+    if (isResendCollectorOptions(resendOptions)) {
+      results.push(
+        await safeCollect("resend", () => collectResendUsage(resendOptions)),
+      );
+    } else {
+      results.push(createResendUsageMetrics(resendOptions));
+    }
   }
 
   if (options.supabase) {
@@ -110,6 +119,12 @@ export async function collectProviderUsage(
     metrics: results.flatMap((result) => result.metrics),
     results,
   };
+}
+
+function isResendCollectorOptions(
+  options: ResendUsageSummaryOptions | ResendCollectorOptions,
+): options is ResendCollectorOptions {
+  return "apiKey" in options && typeof options.apiKey === "string";
 }
 
 function isSupabaseCollectorOptions(

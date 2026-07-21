@@ -9,6 +9,7 @@ The project follows [Semantic Versioning](https://semver.org/).
 ### Added
 
 - Live Supabase database, Storage, and API request usage collection through the Management API, with optional trusted MAU and egress summaries.
+- Live Resend daily and monthly email quota collection from API response headers, without retaining email-list contents.
 
 ## [0.2.0] - 2026-07-21
 

@@ -91,7 +91,39 @@ Override `limits` for Flex or dedicated clusters, and when changing `period`.
 
 ## Resend
 
-Recommended source: your host application database.
+Option 1: collect live daily and monthly quota usage from Resend response
+headers:
+
+```env
+RESEND_API_KEY=
+```
+
+```ts
+collectProviderUsage({
+  resend: {
+    apiKey: process.env.RESEND_API_KEY!,
+    // Optional trusted application-log summaries:
+    failedToday,
+    bouncedThisMonth,
+  },
+});
+```
+
+The collector makes one `GET /emails?limit=1` request and reads
+`x-resend-daily-quota` and `x-resend-monthly-quota`. It validates and discards
+the response body so recipient addresses and subjects are not returned in raw
+output. Resend sends the daily quota header only for free plans, so paid-plan
+results may contain only the monthly quota metric.
+
+The built-in limits match Resend's free transactional plan. Override
+`monthlyEmails` for paid plans because the quota headers report usage, not your
+plan's maximum allowance.
+
+Use a Full access API key because Sending access keys cannot list emails. Keep
+the key server-side. Both sent and received emails count toward Resend's quota.
+
+Option 2: use your host application database for a complete product-level
+summary.
 
 For example, in BNS File Tracking you can summarize `email_logs`:
 
