@@ -6,6 +6,14 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Documentation
+
+- Added an end-to-end integration guide and deterministic AI-agent checklist.
+- Clarified live collector credentials, least-privilege boundaries, conditional
+  provider configuration, persistence, scheduling, and failure handling.
+- Updated the Next.js example to demonstrate the live Resend and Supabase
+  collectors introduced in v0.3.0.
+
 ## [0.3.0] - 2026-07-21
 
 ### Added

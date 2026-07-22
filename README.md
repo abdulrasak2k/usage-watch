@@ -62,6 +62,10 @@ The package includes a `prepare` script, so when it is installed from GitHub, np
 
 ## Quick start
 
+This example enables every live collector. In a real application, pass only the
+providers whose complete credential set is configured. Never pass empty strings
+or browser-exposed environment variables.
+
 ```ts
 import { collectProviderUsage } from "@abdulrasak2k/usage-watch";
 
@@ -87,7 +91,9 @@ export async function collectUsageSnapshot() {
       processId: process.env.MONGODB_ATLAS_PROCESS_ID,
     },
     resend: {
-      apiKey: process.env.RESEND_API_KEY!,
+      // Use a separate Full-access key for usage collection. A Sending-access
+      // key cannot call GET /emails.
+      apiKey: process.env.RESEND_USAGE_API_KEY!,
       // Optional application-log summary; Resend quota headers do not include
       // delivery failures or bounces.
       failedToday: 0,
@@ -142,8 +148,8 @@ Never expose these values to browser bundles:
 - `MONGODB_ATLAS_CLIENT_SECRET`
 - `UPSTASH_EMAIL`
 - `UPSTASH_API_KEY`
-- `RESEND_API_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
+- `RESEND_USAGE_API_KEY` (or whichever server-only variable holds the key)
+- `SUPABASE_ACCESS_TOKEN`
 - `VERCEL_TOKEN`
 
 Good places to use it:
@@ -205,9 +211,19 @@ create index provider_usage_snapshots_collected_at_idx
 
 See [examples/nextjs-route-handler.md](examples/nextjs-route-handler.md).
 
+## Integration guide
+
+For an end-to-end implementation—including optional-provider configuration,
+cron collection, persistence, error handling, validation, and a deterministic
+checklist for developers and AI coding agents—see
+[docs/integration-guide.md](docs/integration-guide.md).
+
 ## Provider configuration
 
 See [docs/provider-configuration.md](docs/provider-configuration.md).
+
+Use [docs/security.md](docs/security.md) when choosing and storing provider
+credentials.
 
 ## Creating a separate GitHub repository
 

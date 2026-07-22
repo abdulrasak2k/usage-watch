@@ -1,6 +1,8 @@
 # Next.js route handler example
 
-Example admin-only endpoint:
+Example admin-only endpoint using the live collectors. Only configure a
+provider when its complete credential set is available; the integration guide
+contains a copy-ready optional-provider builder.
 
 ```ts
 import { NextResponse } from "next/server";
@@ -38,16 +40,14 @@ export async function GET() {
       },
     },
     resend: {
-      // Replace these with counts from your email_logs table.
-      sentToday: 0,
-      sentThisMonth: 0,
-      failedToday: 0,
+      // Requires a separate Full-access key. Sending-only keys cannot list
+      // email usage.
+      apiKey: process.env.RESEND_USAGE_API_KEY!,
     },
     supabase: {
-      // Replace these with trusted server-side summaries.
-      databaseBytes: 0,
-      monthlyActiveUsers: 0,
-      egressBytesThisMonth: 0,
+      projectRef: process.env.SUPABASE_PROJECT_REF!,
+      accessToken: process.env.SUPABASE_ACCESS_TOKEN!,
+      interval: "7day",
     },
   });
 
@@ -64,3 +64,7 @@ Recommended production behavior:
 3. Render the dashboard from stored snapshots.
 4. Restrict the dashboard to super admins.
 5. Alert when any metric status is `warning` or `critical`.
+
+Do not copy this all-provider example unchanged when some credentials are
+missing. See [the integration guide](../docs/integration-guide.md) for
+conditional configuration, summary fallbacks, and cron protection.
