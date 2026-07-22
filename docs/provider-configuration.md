@@ -95,13 +95,13 @@ Option 1: collect live daily and monthly quota usage from Resend response
 headers:
 
 ```env
-RESEND_API_KEY=
+RESEND_USAGE_API_KEY=
 ```
 
 ```ts
 collectProviderUsage({
   resend: {
-    apiKey: process.env.RESEND_API_KEY!,
+    apiKey: process.env.RESEND_USAGE_API_KEY!,
     // Optional trusted application-log summaries:
     failedToday,
     bouncedThisMonth,
@@ -120,7 +120,9 @@ The built-in limits match Resend's free transactional plan. Override
 plan's maximum allowance.
 
 Use a Full access API key because Sending access keys cannot list emails. Keep
-the key server-side. Both sent and received emails count toward Resend's quota.
+the key server-side. Use a dedicated variable such as `RESEND_USAGE_API_KEY` so
+the application's Sending-only key can retain least privilege. Both sent and
+received emails count toward Resend's quota.
 
 Option 2: use your host application database for a complete product-level
 summary.
